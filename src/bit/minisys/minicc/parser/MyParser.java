@@ -364,7 +364,7 @@ public class MyParser implements IMiniCCParser {
 	}
 
 
-	//EXPR  EXPR_AND EXPR’
+	//EXPR --> EXPR_AND EXPR’
 	public ASTExpression expr() {
 		ASTExpression e = exprAnd();
 		ASTBinaryExpression be = expr2(e);
@@ -376,7 +376,7 @@ public class MyParser implements IMiniCCParser {
 		}
 	}
 
-	//EXPR’   (‘=’ | ‘+=’ | ‘-=’ | ‘*=’) EXPR_AND EXPR’ | ε
+	//EXPR’ -->  (‘=’ | ‘+=’ | ‘-=’ | ‘*=’) EXPR_AND EXPR’ | ε
 	public ASTBinaryExpression expr2(ASTExpression e) {
 		nextToken = tknList.get(tokenIndex);
 		if (nextToken.type.equals("'='") || nextToken.type.equals("'+='") || nextToken.type.equals("'-='") || nextToken.type.equals("'*='")) {
@@ -411,7 +411,7 @@ public class MyParser implements IMiniCCParser {
 		}
 	}
 
-	//EXPR_AND’  ‘&&’ EXPR_RELA EXPR_AND’ | ε
+	//EXPR_AND’ --> ‘&&’ EXPR_RELA EXPR_AND’ | ε
 	public ASTBinaryExpression exprAnd2(ASTExpression e) {
 		nextToken = tknList.get(tokenIndex);
 		if (nextToken.type.equals("'&&'") ) {
@@ -434,7 +434,7 @@ public class MyParser implements IMiniCCParser {
 		}
 	}
 
-	//EXPR_RELA  EXPR_ADD EXPR_RELA’
+	//EXPR_RELA --> EXPR_ADD EXPR_RELA’
 	public ASTExpression exprRela() {
 		ASTExpression e = exprAdd();
 		ASTBinaryExpression be = exprRela2(e);
@@ -446,7 +446,7 @@ public class MyParser implements IMiniCCParser {
 		}
 	}
 
-	//EXPR_RELA’  (‘>’ | ‘<’ | ‘>=’ | ‘<=’) EXPR_ADD EXPR_RELA’ | ε
+	//EXPR_RELA’ --> (‘>’ | ‘<’ | ‘>=’ | ‘<=’) EXPR_ADD EXPR_RELA’ | ε
 	public ASTBinaryExpression exprRela2(ASTExpression e) {
 		nextToken = tknList.get(tokenIndex);
 		if (nextToken.type.equals("'>'") || nextToken.type.equals("'<'") || nextToken.type.equals("'>='") || nextToken.type.equals("'<='")) {
@@ -469,7 +469,7 @@ public class MyParser implements IMiniCCParser {
 		}
 	}
 
-	//EXPR_ADD  EXPR_MUL EXPR_ADD’
+	//EXPR_ADD --> EXPR_MUL EXPR_ADD’
 	public ASTExpression exprAdd() {
 		ASTExpression e = exprMul();
 		ASTBinaryExpression be = exprAdd2(e);
@@ -481,7 +481,7 @@ public class MyParser implements IMiniCCParser {
 		}
 	}
 
-	//EXPR_ADD’  (‘+’ | ‘-’) EXPR_MUL EXPR_ADD’ | ε
+	//EXPR_ADD’ --> (‘+’ | ‘-’) EXPR_MUL EXPR_ADD’ | ε
 	public ASTBinaryExpression exprAdd2(ASTExpression e) {
 		nextToken = tknList.get(tokenIndex);
 		if (nextToken.type.equals("'+'") || nextToken.type.equals("'-'")) {
@@ -504,7 +504,7 @@ public class MyParser implements IMiniCCParser {
 		}
 	}
 
-	//EXPR_MUL  EXPR_POST EXPR_MUL’
+	//EXPR_MUL --> EXPR_POST EXPR_MUL’
 	public ASTExpression exprMul() {
 		ASTExpression e = exprPost();
 		ASTBinaryExpression be = exprMul2(e);
@@ -516,7 +516,7 @@ public class MyParser implements IMiniCCParser {
 		}
 	}
 
-	//EXPR_MUL’  (‘*’ | ‘/’ | ‘%’) EXPR_POST EXPR_MUL’ | ε
+	//EXPR_MUL’ --> (‘*’ | ‘/’ | ‘%’) EXPR_POST EXPR_MUL’ | ε
 	public ASTBinaryExpression exprMul2(ASTExpression e) {
 		nextToken = tknList.get(tokenIndex);
 		if (nextToken.type.equals("'*'") || nextToken.type.equals("'/'") || nextToken.type.equals("'%'")) {
@@ -539,7 +539,7 @@ public class MyParser implements IMiniCCParser {
 		}
 	}
 
-	//EXPR_POST  EXPR_PRIM EXPR_POST’
+	//EXPR_POST --> EXPR_PRIM EXPR_POST’
 	public ASTExpression exprPost() {
 		ASTExpression e = exprPrim();
 		ASTExpression be = exprPost2(e);
@@ -551,7 +551,7 @@ public class MyParser implements IMiniCCParser {
 		}
 	}
 
-	//EXPR_POST’  (‘++’ | ‘--’) EXPR_POST’ | ‘[’ EXPR ‘]’ EXPR_POST’ | ε
+	//EXPR_POST’ --> (‘++’ | ‘--’) EXPR_POST’ | ‘[’ EXPR ‘]’ EXPR_POST’ | ε
 	public ASTExpression exprPost2(ASTExpression e) {
 		nextToken = tknList.get(tokenIndex);
 		if (nextToken.type.equals("'++'") || nextToken.type.equals("'--'") ) {
@@ -592,7 +592,7 @@ public class MyParser implements IMiniCCParser {
 		}
 	}
 
-	//EXPR_PRIM  ID | CONST_INT | CONST_FLOAT | CONST_CHAR | STR | ‘(’ EXPR ‘)’ | FUNC_CALL
+	//EXPR_PRIM --> ID | CONST_INT | CONST_FLOAT | CONST_CHAR | STR | ‘(’ EXPR ‘)’ | FUNC_CALL
 	public ASTExpression exprPrim() {
 		nextToken = tknList.get(tokenIndex);
 		switch (nextToken.type) {
@@ -623,7 +623,7 @@ public class MyParser implements IMiniCCParser {
 		}
 	}
 
-	//FUNC_CALL  ID ‘(’ PARA_LIST ‘)’
+	//FUNC_CALL --> ID ‘(’ PARA_LIST ‘)’
 	public ASTFunctionCall funcCall(ASTIdentifier id ) {
 		ASTFunctionCall fc = new ASTFunctionCall();
 		fc.funcname = id;
@@ -635,7 +635,7 @@ public class MyParser implements IMiniCCParser {
 		return fc;
 	}
 
-	//PARA_LIST  EXPR ‘,’ PARA_LIST | EXPR | ε
+	//PARA_LIST --> EXPR ‘,’ PARA_LIST | EXPR | ε
 	public void paraList(ASTFunctionCall fc) {
 		nextToken = tknList.get(tokenIndex);
 		if (nextToken.type.equals("')'")) {
@@ -656,7 +656,7 @@ public class MyParser implements IMiniCCParser {
 		}
 	}
 
-	//DECL_STMT  TYPE INIT_LIST ‘;’
+	//DECL_STMT --> TYPE INIT_LIST ‘;’
 	public ASTDeclaration declStmt(){
 		ASTDeclaration d = new ASTDeclaration();
 		ASTToken t = type();
@@ -672,7 +672,7 @@ public class MyParser implements IMiniCCParser {
 		return d;
 	}
 
-	//INIT_LIST  INIT_ITEM INIT_LIST’
+	//INIT_LIST --> INIT_ITEM INIT_LIST’
 	public void initList(ASTDeclaration d) {
 		ASTInitList il = initItem();
 		d.initLists = new ArrayList<>();
@@ -682,7 +682,7 @@ public class MyParser implements IMiniCCParser {
 		initList2(d);
 	}
 
-	//INIT_LIST’  ‘,’ INIT_ITEM INIT_LIST’ | ε
+	//INIT_LIST’ --> ‘,’ INIT_ITEM INIT_LIST’ | ε
 	public void initList2(ASTDeclaration d) {
 		nextToken =tknList.get(tokenIndex);
 		if (nextToken.type.equals("';'")) {
@@ -696,7 +696,7 @@ public class MyParser implements IMiniCCParser {
 		}
 	}
 
-	//INIT_ITEM  DECLR ‘=’ EXPR | DECLR
+	//INIT_ITEM --> DECLR ‘=’ EXPR | DECLR
 	public ASTInitList initItem() {
 		ASTInitList il = new ASTInitList();
 		ASTDeclarator d = declr();
@@ -713,8 +713,8 @@ public class MyParser implements IMiniCCParser {
 		return il;
 	}
 
-	//DECLR  VAR | ARR
-	//VAR ID
+	//DECLR --> VAR | ARR
+	//VAR --> ID
 	public ASTDeclarator declr() {
 		ASTVariableDeclarator vd = new ASTVariableDeclarator();
 		ASTIdentifier id = identifier();
@@ -729,7 +729,7 @@ public class MyParser implements IMiniCCParser {
 		}
 	}
 
-	//ARR  DECLR ‘[’ EXPR ‘]’
+	//ARR --> DECLR ‘[’ EXPR ‘]’
 	public ASTArrayDeclarator arr(ASTDeclarator d) {
 		ASTArrayDeclarator ad = new ASTArrayDeclarator();
 		ad.declarator = d;
@@ -756,7 +756,7 @@ public class MyParser implements IMiniCCParser {
 		}
 	}
 
-	//SELC_STMT  ‘if’ ‘(’ EXPR ‘)’ STMT | ‘if’ ‘(’ EXPR ‘)’ STMT ‘else’ STMT
+	//SELC_STMT --> ‘if’ ‘(’ EXPR ‘)’ STMT | ‘if’ ‘(’ EXPR ‘)’ STMT ‘else’ STMT
 	public ASTSelectionStatement selcStmt() {
 		ASTSelectionStatement ss = new ASTSelectionStatement();
 		token = matchToken("'if'");
@@ -787,9 +787,9 @@ public class MyParser implements IMiniCCParser {
 		return ss;
 	}
 
-	//ITER_STMT  ITER_DECL_STMT | ITER_EXPR_STMT;
-	//ITER_EXPR_STMT  ‘for’ ‘(’ EXPR ‘;’ EXPR ‘;’ EXPR ’)’ STMT
-	//ITER_DECL_STMT  ‘for’ ‘(’ DECLN ‘;’ EXPR ‘;’ EXPR ’)’ STMT
+	//ITER_STMT --> ITER_DECL_STMT | ITER_EXPR_STMT;
+	//ITER_EXPR_STMT --> ‘for’ ‘(’ EXPR ‘;’ EXPR ‘;’ EXPR ’)’ STMT
+	//ITER_DECL_STMT --> ‘for’ ‘(’ DECLN ‘;’ EXPR ‘;’ EXPR ’)’ STMT
 	public ASTStatement iterStmt() {
 		token = matchToken("'for'");
 		token = matchToken("'('");
